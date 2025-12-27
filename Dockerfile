@@ -1,5 +1,16 @@
-# Use official RenderCV image which has LaTeX/TinyTeX pre-installed
-FROM ghcr.io/rendercv/rendercv:latest
+FROM python:3.13-slim
+
+# Install LaTeX and dependencies for rendercv
+# This layer will be cached unless apt dependencies change
+RUN apt-get update && apt-get install -y \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-xetex \
+    latexmk \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -9,14 +20,13 @@ RUN pip install uv
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies (including backend libs). 
-# Note: RenderCV image has system LaTeX which our venv-installed rendercv will use.
+# Install dependencies
 RUN uv sync --frozen
 
 # Copy application code
 COPY api/ ./api/
 
-# Expose port (internal)
+# Expose port
 EXPOSE 8000
 
 # Run the application
