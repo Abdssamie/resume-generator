@@ -1,0 +1,24 @@
+[project]
+name = "resume-generator"
+version = "0.1.0"
+description = "Free resume generator with web interface"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.128.0",
+    "pyyaml>=6.0.3",
+    "rendercv[full]",
+    "uvicorn[standard]>=0.40.0",
+    "slowapi>=0.1.9",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+]
+
+
+
+

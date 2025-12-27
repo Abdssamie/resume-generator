@@ -1,0 +1,141 @@
+# Complete RenderCV Example - Tests All Entry Types & Features
+# This example demonstrates every entry type and feature available in RenderCV
+
+cv:
+  name: Alexandra Chen
+  headline: Senior Full Stack Engineer | Cloud Architecture | Team Leadership
+  email: alexandra.chen@example.com
+  phone: "+14155551234"
+  location: San Francisco, CA, USA
+  website: https://alexandrachen.dev
+
+  social_networks:
+    - network: LinkedIn
+      username: alexandrachen
+    - network: GitHub
+      username: alexchen-dev
+    - network: X
+      username: alex_codes
+    - network: StackOverflow
+      username: "12345678/alexandra-chen"
+
+  sections:
+    # TextEntry - Plain text for summary
+    summary:
+      - "Results-driven Senior Full Stack Engineer with 8+ years of experience building scalable web applications and leading cross-functional teams. Expert in **React**, **Node.js**, **Python**, and cloud infrastructure. Passionate about mentoring developers and implementing best practices."
+
+    # ExperienceEntry - Work history
+    experience:
+      - company: TechGiant Inc.
+        position: Senior Software Engineer
+        start_date: 2021-03
+        end_date: present
+        location: San Francisco, CA
+        highlights:
+          - "Led a team of **8 engineers** to rebuild the customer-facing dashboard, improving load times by **65%**"
+          - "Architected microservices migration, reducing deployment time from 4 hours to **15 minutes**"
+          - "Designed real-time notification system handling **10M+ daily events** using Kafka"
+          - "Mentored **5 junior developers** with weekly code reviews"
+
+      - company: StartupXYZ
+        position: Full Stack Developer
+        start_date: 2018-06
+        end_date: 2021-02
+        location: Palo Alto, CA
+        highlights:
+          - "Built frontend with **React** and **TypeScript** serving **100K+ monthly users**"
+          - "Developed RESTful APIs with **Node.js/Express** handling **1M+ daily requests**"
+          - "Implemented CI/CD pipelines enabling **daily deployments**"
+
+      - company: Digital Agency Co.
+        position: Junior Web Developer
+        start_date: 2016-01
+        end_date: 2018-05
+        location: Los Angeles, CA
+        highlights:
+          - "Developed responsive websites for **20+ clients**"
+          - "Built custom WordPress themes increasing satisfaction by **25%**"
+
+    # EducationEntry - Academic credentials
+    education:
+      - institution: Stanford University
+        area: Computer Science
+        degree: M.S.
+        start_date: 2014-09
+        end_date: 2016-06
+        location: Stanford, CA
+        highlights:
+          - "GPA: **3.9/4.0** - Dean's Honor List"
+          - "Thesis: *Distributed Systems for Real-Time Data Processing*"
+
+      - institution: University of California, Berkeley
+        area: Electrical Engineering & Computer Science
+        degree: B.S.
+        start_date: 2010-09
+        end_date: 2014-05
+        location: Berkeley, CA
+        highlights:
+          - "GPA: **3.7/4.0** - Magna Cum Laude"
+          - "President of ACM Student Chapter"
+
+    # OneLineEntry - Skills
+    skills:
+      - label: Programming Languages
+        details: TypeScript, JavaScript, Python, Go, Rust, Java, SQL
+      - label: Frontend
+        details: React, Next.js, Vue.js, Tailwind CSS, HTML5, CSS3
+      - label: Backend
+        details: Node.js, Express, FastAPI, Django, GraphQL, REST APIs
+      - label: Databases
+        details: PostgreSQL, MongoDB, Redis, Elasticsearch, DynamoDB
+      - label: Cloud & DevOps
+        details: AWS, GCP, Docker, Kubernetes, Terraform, CI/CD
+
+    # NormalEntry - Projects
+    projects:
+      - name: "DevDashboard - Developer Productivity Tool"
+        start_date: 2021-06
+        end_date: 2022-12
+        summary: "Open source developer productivity dashboard"
+        highlights:
+          - "Built with React, Node.js, PostgreSQL - **500+ GitHub stars**"
+          - "Integrates with GitHub, Jira, and Slack"
+
+      - name: "FastAPI Core Contributor"
+        start_date: 2022-01
+        end_date: present
+        highlights:
+          - "**15+ merged PRs** to [FastAPI framework](https://github.com/tiangolo/fastapi)"
+          - "Implemented validation features used by thousands"
+
+    # PublicationEntry - Papers
+    publications:
+      - title: "Scaling Real-Time Applications with Event-Driven Architecture"
+        authors:
+          - "***A. Chen***"
+          - "J. Smith"
+          - "M. Johnson"
+        journal: IEEE Software Engineering Conference
+        date: 2023-09
+        doi: "10.1109/SEC.2023.12345"
+
+    # BulletEntry - Certifications as simple bullets
+    certifications:
+      - bullet: "**AWS Solutions Architect – Professional** (2023)"
+      - bullet: "**Google Cloud Professional Cloud Architect** (2022)"
+      - bullet: "**Certified Kubernetes Administrator (CKA)** (2022)"
+
+    # OneLineEntry - Languages
+    languages:
+      - label: English
+        details: Native
+      - label: Mandarin Chinese
+        details: Native
+      - label: Spanish
+        details: Conversational
+
+design:
+  theme: classic
+
+locale:
+  language: english

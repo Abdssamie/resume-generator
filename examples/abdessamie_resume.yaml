@@ -1,0 +1,69 @@
+# Abdessamie El Moubarki - Resume
+# Fixed for proper rendering with engineeringresumes theme
+
+cv:
+  name: "Abdessamie El Moubarki"
+  headline: "Senior Full-Stack Developer | Node.js & Python Specialist"
+  email: "abdessamie.elmoubarki@email.com"
+  phone: "+212600000000"
+  location: "Casablanca, Morocco"
+  website: "https://abdessamie.dev"
+  social_networks:
+    - network: LinkedIn
+      username: abdessamie-el-moubarki
+    - network: GitHub
+      username: aelmoubarki
+
+  sections:
+    summary:
+      - "Innovative Full-Stack Developer with over 5 years of experience specializing in high-performance Node.js microservices and scalable Python applications. Proven track record of optimizing system architecture to reduce latency and implementing robust CI/CD pipelines to accelerate deployment cycles."
+
+    experience:
+      - company: "TechFlow Solutions"
+        position: "Senior Full-Stack Developer"
+        start_date: "2021-06"
+        end_date: "present"
+        location: "Remote"
+        highlights:
+          - "Architected a real-time analytics dashboard using Node.js and Socket.io, improving data refresh rates by 40% for over 10,000 concurrent users."
+          - "Developed a Python-based automated testing suite that reduced manual QA time by 60% and caught 25% more edge-case bugs before production."
+          - "Led the migration of a monolithic Express application to a microservices architecture, resulting in a 30% reduction in server costs."
+          - "Mentored a team of 4 junior developers, conducting code reviews and implementing best practices for TypeScript and PEP 8 standards."
+
+      - company: "DataStream Systems"
+        position: "Full-Stack Developer"
+        start_date: "2018-09"
+        end_date: "2021-05"
+        location: "Rabat, Morocco"
+        highlights:
+          - "Built and maintained RESTful APIs using Django and FastAPI, integrating complex third-party payment gateways and CRM systems."
+          - "Optimized PostgreSQL database queries and indexing strategies, decreasing average API response times from 500ms to 120ms."
+          - "Designed responsive frontend components using React and Redux, achieving a 95+ score on Google Lighthouse for performance and SEO."
+
+    education:
+      # Use abbreviations (M.S., B.S., Ph.D.) to avoid text wrapping in narrow columns
+      - institution: "Mohammed V University"
+        area: "Computer Science and Software Engineering"
+        degree: "M.S."  # Fixed: Use abbreviation
+        start_date: "2016-09"
+        end_date: "2018-06"
+        location: "Rabat, Morocco"
+      - institution: "Al Akhawayn University"
+        area: "Computer Science"
+        degree: "B.S."  # Fixed: Use abbreviation
+        start_date: "2012-09"
+        end_date: "2016-06"
+        location: "Ifrane, Morocco"
+
+    skills:
+      - label: "Backend"
+        details: "Node.js, Python, TypeScript, Express, FastAPI, Django, NestJS"
+      - label: "Frontend"
+        details: "React, Next.js, Tailwind CSS, Redux, Webpack"
+      - label: "Cloud & DevOps"
+        details: "Docker, Kubernetes, AWS (S3, EC2, Lambda), CI/CD (GitHub Actions), Terraform"
+      - label: "Databases"
+        details: "PostgreSQL, MongoDB, Redis, Elasticsearch"
+
+design:
+  theme: engineeringresumes
