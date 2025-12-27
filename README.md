@@ -5,9 +5,9 @@
 
 A free, open-source resume generator that transforms your profile into ATS-friendly PDF resumes using LaTeX. Features AI assistance, real-time preview, and privacy-focused local processing.
 
-**Live Demo:** [Running locally]
+**Live Demo:** [https://web-nfic64zsa-abdssamies-projects.vercel.app](https://web-nfic64zsa-abdssamies-projects.vercel.app) 
 
-![Resume Generator Hero](./web/public/hero-screenshot.png)
+![Resume Generator Hero](./web/public/hero-image.png)
 
 ## 🌟 Key Features
 
@@ -37,7 +37,7 @@ A free, open-source resume generator that transforms your profile into ATS-frien
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/resume-generator.git
+   git clone https://github.com/Abdssamie/resume-generator.git
    cd resume-generator
    ```
 
