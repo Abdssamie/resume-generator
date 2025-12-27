@@ -158,7 +158,11 @@ export function parseYamlToResumeData(yamlText: string): Partial<ResumeData> {
                     title,
                     entries: entries.map((e) => ({
                         id: crypto.randomUUID(),
-                        content: typeof e === "string" ? e : String(e),
+                        content: typeof e === "string"
+                            ? e
+                            : (typeof e === "object" && e !== null)
+                                ? JSON.stringify(e)
+                                : String(e),
                     })),
                 });
             }

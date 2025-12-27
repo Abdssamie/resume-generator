@@ -188,4 +188,37 @@ cv:
 
         expect(result.summary).toBe("First paragraph.\nSecond paragraph.");
     });
+
+    it('parses custom sections with string and object entries', () => {
+        const yaml = `
+cv:
+  name: "Custom User"
+  sections:
+    certifications:
+      - "AWS Certified"
+      - name: "Azure Certified"
+        year: 2023
+    languages:
+      - language: "English"
+        level: "Native"
+`;
+        const result = parseYamlToResumeData(yaml);
+
+        expect(result.custom_sections).toHaveLength(2);
+
+        // Find Certifications
+        const certs = result.custom_sections?.find(s => s.title === 'certifications');
+        expect(certs).toBeDefined();
+        expect(certs?.entries).toHaveLength(2);
+        expect(certs?.entries[0].content).toBe("AWS Certified");
+        // Verify object entry is stringified
+        const objEntry = JSON.parse(certs!.entries[1].content);
+        expect(objEntry.name).toBe("Azure Certified");
+        expect(objEntry.year).toBe(2023);
+
+        // Find Languages
+        const langs = result.custom_sections?.find(s => s.title === 'languages');
+        expect(langs).toBeDefined();
+        expect(langs?.entries[0].content).toContain('"language":"English"');
+    });
 });
