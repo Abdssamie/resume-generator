@@ -30,17 +30,9 @@ app.add_middleware(SlowAPIMiddleware)
 
 # Debug: Log allowed origins
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
-allowed_origins = allowed_origins_env.split(",")
+allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
 logger.info(f"DEBUG: ALLOWED_ORIGINS env var: '{allowed_origins_env}'")
 logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
-
-# Debug middleware to log request origin
-@app.middleware("http")
-async def log_request_origin(request: Request, call_next):
-    origin = request.headers.get("origin")
-    logger.info(f"DEBUG: Incoming Request Origin: {origin}")
-    response = await call_next(request)
-    return response
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,6 +41,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Debug middleware to log request origin (Added LAST so it runs FIRST)
+@app.middleware("http")
+async def log_request_origin(request: Request, call_next):
+    origin = request.headers.get("origin")
+    logger.info(f"DEBUG: Incoming Request Method: {request.method}")
+    logger.info(f"DEBUG: Incoming Request URL: {request.url}")
+    logger.info(f"DEBUG: Incoming Request Origin: {origin}")
+    response = await call_next(request)
+    return response
 
 
 # --- Custom Exception Handler for Friendly Validation Errors ---
