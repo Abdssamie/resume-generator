@@ -46,12 +46,22 @@ app.add_middleware(
 @app.middleware("http")
 async def log_request_origin(request: Request, call_next):
     origin = request.headers.get("origin")
-    logger.info(f"DEBUG: Incoming Request Method: {request.method}")
-    logger.info(f"DEBUG: Incoming Request URL: {request.url}")
-    logger.info(f"DEBUG: Incoming Request Origin: {origin}")
+    logger.info(f"DEBUG: Incoming {request.method} Request to {request.url.path}")
+    logger.info(f"DEBUG: Headers: {request.headers}")
     response = await call_next(request)
     return response
 
+# Explicit OPTIONS handler to debug/bypass CORS middleware issues
+@app.options("/generate")
+async def generate_options(request: Request):
+    logger.info("DEBUG: Explicit OPTIONS /generate called")
+    return Response(status_code=200)
+
+# Debug: Log 404s to see what path is actually being requested
+@app.exception_handler(404)
+async def custom_404_handler(request: Request, exc):
+    logger.error(f"DEBUG: 404 Not Found for path: {request.url.path}")
+    return JSONResponse(status_code=404, content={"detail": f"Path {request.url.path} not found"})
 
 # --- Custom Exception Handler for Friendly Validation Errors ---
 
