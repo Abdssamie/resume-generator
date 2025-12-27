@@ -31,7 +31,7 @@ allowed_origins = [origin.strip() for origin in ALLOWED_ORIGINS_ENV.split(",")]
 logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
 
 # Parse ALLOWED_HOSTS
-ALLOWED_HOSTS_ENV = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0")
+ALLOWED_HOSTS_ENV = os.getenv("ALLOWED_HOSTS", "")
 allowed_hosts = [host.strip() for host in ALLOWED_HOSTS_ENV.split(",")]
 logger.info(f"DEBUG: Parsed Allowed Hosts: {allowed_hosts}")
 
