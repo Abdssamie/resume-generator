@@ -39,7 +39,7 @@ app.state.limiter = limiter
 # Allow localhost and the Vercel domain (and its subdomains)
 app.add_middleware(
     TrustedHostMiddleware, 
-    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "resume-generator-*.vercel.app"]
+    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app"]
 )
 
 # 2. Payload size limit middleware (Prevent DoS)
