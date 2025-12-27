@@ -196,29 +196,38 @@ cv:
   sections:
     certifications:
       - "AWS Certified"
-      - name: "Azure Certified"
-        year: 2023
+      - bullet: "Azure Certified"
     languages:
-      - language: "English"
-        level: "Native"
+      - label: "English"
+        details: "Native"
+    publications:
+      - title: "My Paper"
+        authors: 
+          - "Me"
+          - "Co-author"
+        date: "2023"
 `;
         const result = parseYamlToResumeData(yaml);
 
-        expect(result.custom_sections).toHaveLength(2);
+        expect(result.custom_sections).toHaveLength(3);
 
-        // Find Certifications
+        // Certifications (mixed string and bullet object)
         const certs = result.custom_sections?.find(s => s.title === 'certifications');
         expect(certs).toBeDefined();
         expect(certs?.entries).toHaveLength(2);
         expect(certs?.entries[0].content).toBe("AWS Certified");
-        // Verify object entry is stringified
-        const objEntry = JSON.parse(certs!.entries[1].content);
-        expect(objEntry.name).toBe("Azure Certified");
-        expect(objEntry.year).toBe(2023);
+        expect(certs?.entries[1].content).toBe("Azure Certified");
 
-        // Find Languages
+        // Languages (OneLineEntry)
         const langs = result.custom_sections?.find(s => s.title === 'languages');
         expect(langs).toBeDefined();
-        expect(langs?.entries[0].content).toContain('"language":"English"');
+        expect(langs?.entries[0].content).toBe("**English:** Native");
+
+        // Publications (PublicationEntry)
+        const pubs = result.custom_sections?.find(s => s.title === 'publications');
+        expect(pubs).toBeDefined();
+        expect(pubs?.entries[0].content).toContain("**My Paper**");
+        expect(pubs?.entries[0].content).toContain("Me, Co-author");
+        expect(pubs?.entries[0].content).toContain("(2023)");
     });
 });

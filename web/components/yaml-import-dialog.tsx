@@ -156,14 +156,45 @@ export function parseYamlToResumeData(yamlText: string): Partial<ResumeData> {
                 customSections.push({
                     id: crypto.randomUUID(),
                     title,
-                    entries: entries.map((e) => ({
-                        id: crypto.randomUUID(),
-                        content: typeof e === "string"
-                            ? e
-                            : (typeof e === "object" && e !== null)
-                                ? JSON.stringify(e)
-                                : String(e),
-                    })),
+                    entries: entries.map((e) => {
+                        let content = "";
+                        if (typeof e === "string") {
+                            content = e;
+                        } else if (typeof e === "object" && e !== null) {
+                            // Handle RenderCV entry types
+                            const entry = e as any;
+
+                            if (entry.bullet) {
+                                // BulletEntry
+                                content = entry.bullet;
+                            } else if (entry.label && entry.details) {
+                                // OneLineEntry
+                                content = `**${entry.label}:** ${entry.details}`;
+                            } else if (entry.title && entry.authors) {
+                                // PublicationEntry
+                                const authors = Array.isArray(entry.authors)
+                                    ? entry.authors.join(", ")
+                                    : entry.authors;
+                                content = `**${entry.title}**\n${authors} (${entry.date || ""})`;
+                            } else if (entry.institution && entry.area) {
+                                // EducationEntry (if inside custom section)
+                                content = `**${entry.institution}**, ${entry.area} (${entry.date || ""})`;
+                            } else if (entry.company && entry.position) {
+                                // ExperienceEntry (if inside custom section)
+                                content = `**${entry.company}** - ${entry.position}`;
+                            } else {
+                                // Fallback for unknown structure
+                                content = JSON.stringify(e);
+                            }
+                        } else {
+                            content = String(e);
+                        }
+
+                        return {
+                            id: crypto.randomUUID(),
+                            content,
+                        };
+                    }),
                 });
             }
         }
