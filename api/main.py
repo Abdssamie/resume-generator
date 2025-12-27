@@ -14,15 +14,37 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
 
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ... existing imports ...
+
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="Resume Generator API", version="1.0.0")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
+# Debug: Log allowed origins
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+allowed_origins = allowed_origins_env.split(",")
+logger.info(f"DEBUG: ALLOWED_ORIGINS env var: '{allowed_origins_env}'")
+logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
+
+# Debug middleware to log request origin
+@app.middleware("http")
+async def log_request_origin(request: Request, call_next):
+    origin = request.headers.get("origin")
+    logger.info(f"DEBUG: Incoming Request Origin: {origin}")
+    response = await call_next(request)
+    return response
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(","),
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
