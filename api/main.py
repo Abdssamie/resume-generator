@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Depends, Security
+from fastapi.security.api_key import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response, JSONResponse
 from fastapi.exceptions import RequestValidationError
@@ -23,10 +24,31 @@ from fastapi.responses import JSONResponse
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 # Parse ALLOWED_ORIGINS
 ALLOWED_ORIGINS_ENV = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
 allowed_origins = [origin.strip() for origin in ALLOWED_ORIGINS_ENV.split(",")]
 logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
+
+# Parse ALLOWED_HOSTS
+ALLOWED_HOSTS_ENV = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0")
+allowed_hosts = [host.strip() for host in ALLOWED_HOSTS_ENV.split(",")]
+logger.info(f"DEBUG: Parsed Allowed Hosts: {allowed_hosts}")
+
+# API Security
+API_SECRET = os.getenv("API_SECRET", "default-dev-secret")
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+async def verify_api_key(api_key: str = Security(api_key_header)):
+    if API_SECRET == "default-dev-secret":
+        logger.warning("Using default API secret! Please set API_SECRET env var.")
+    
+    if api_key != API_SECRET:
+        raise HTTPException(
+            status_code=403,
+            detail="Could not validate credentials"
+        )
+    return api_key
 
 # Initialize app
 limiter = Limiter(key_func=get_remote_address)
@@ -39,7 +61,7 @@ app.state.limiter = limiter
 # Allow localhost and the Vercel domain (and its subdomains)
 app.add_middleware(
     TrustedHostMiddleware, 
-    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app"]
+    allowed_hosts=allowed_hosts
 )
 
 # 2. Payload size limit middleware (Prevent DoS)
@@ -508,7 +530,7 @@ async def health_check():
     return {"status": "healthy"}
 
 
-@app.post("/generate")
+@app.post("/generate", dependencies=[Depends(verify_api_key)])
 @limiter.limit("5/minute")
 async def generate_pdf(request: Request, data: ResumeData):
     """Generate PDF from resume data."""
@@ -525,7 +547,7 @@ async def generate_pdf(request: Request, data: ResumeData):
     )
 
 
-@app.post("/yaml")
+@app.post("/yaml", dependencies=[Depends(verify_api_key)])
 @limiter.limit("500/hour", key_func=global_limit_key)
 @limiter.limit("15/minute")
 async def generate_yaml(request: Request, data: ResumeData):
@@ -552,7 +574,7 @@ class YamlRenderRequest(BaseModel):
         return v
 
 
-@app.post("/yaml/render")
+@app.post("/yaml/render", dependencies=[Depends(verify_api_key)])
 @limiter.limit("5/minute")
 async def render_yaml(request: Request, request_data: YamlRenderRequest):
     """Render PDF from raw YAML content."""

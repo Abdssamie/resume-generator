@@ -1,6 +1,7 @@
 import type { ResumeData } from "./resume-types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_SECRET = process.env.NEXT_PUBLIC_API_SECRET || "default-dev-secret";
 
 interface ApiResumeData {
     name: string;
@@ -94,7 +95,10 @@ function toApiFormat(data: ResumeData): ApiResumeData {
 export async function generatePdf(data: ResumeData): Promise<Blob> {
     const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": API_SECRET
+        },
         body: JSON.stringify(toApiFormat(data)),
     });
 
@@ -109,7 +113,10 @@ export async function generatePdf(data: ResumeData): Promise<Blob> {
 export async function generateYaml(data: ResumeData): Promise<string> {
     const response = await fetch(`${API_URL}/yaml`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": API_SECRET
+        },
         body: JSON.stringify(toApiFormat(data)),
     });
 
@@ -124,7 +131,10 @@ export async function generateYaml(data: ResumeData): Promise<string> {
 export async function renderYaml(yamlContent: string): Promise<Blob> {
     const response = await fetch(`${API_URL}/yaml/render`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": API_SECRET
+        },
         body: JSON.stringify({ yaml_content: yamlContent }),
     });
 
