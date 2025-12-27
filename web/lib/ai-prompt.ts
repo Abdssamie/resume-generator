@@ -68,8 +68,15 @@ cv:
         highlights:
           - "Achievement with **quantified results** (e.g., increased X by 25%)"
 
+    education:
+      - institution: "University Name"
+        area: "Field of Study"
+        degree: "Degree (e.g. B.S.)"
         start_date: "2015-09"
         end_date: "2019-05"
+        location: "City, Country"
+        highlights:
+          - "GPA: **3.9/4.0**"
 
     projects:
       - name: "Project Name"
@@ -99,6 +106,7 @@ design:
 - Social networks: LinkedIn, GitHub, X, StackOverflow (with format: 12345/username), Bluesky
 - StackOverflow username must be: user_id/username (e.g., 12345678/john-doe)
 - Use **bold** in highlights for emphasis
+- Use markdwon to style other other sections entries if needed
 - Quantify achievements: "Increased revenue by $2M" not "Increased revenue"
 
 ---
