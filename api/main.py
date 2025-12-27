@@ -16,22 +16,53 @@ from slowapi.middleware import SlowAPIMiddleware
 
 import logging
 
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.responses import JSONResponse
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ... existing imports ...
+# Parse ALLOWED_ORIGINS
+ALLOWED_ORIGINS_ENV = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+allowed_origins = [origin.strip() for origin in ALLOWED_ORIGINS_ENV.split(",")]
+logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
 
+# Initialize app
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="Resume Generator API", version="1.0.0")
 app.state.limiter = limiter
+
+# Security Middlewares
+
+# 1. Trusted Host Middleware (prevent Host Header attacks)
+# Allow localhost and the Vercel domain (and its subdomains)
+app.add_middleware(
+    TrustedHostMiddleware, 
+    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "resume-generator-*.vercel.app"]
+)
+
+# 2. Payload size limit middleware (Prevent DoS)
+@app.middleware("http")
+async def limit_upload_size(request: Request, call_next):
+    # Limit to 2MB
+    MAX_UPLOAD_SIZE = 2 * 1024 * 1024
+    
+    content_length = request.headers.get("content-length")
+    if content_length:
+        if int(content_length) > MAX_UPLOAD_SIZE:
+            return JSONResponse(
+                status_code=413,
+                content={"detail": "Payload too large. Maximum size is 2MB."}
+            )
+            
+    return await call_next(request)
+
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
 # Debug: Log allowed origins
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
-allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")]
-logger.info(f"DEBUG: ALLOWED_ORIGINS env var: '{allowed_origins_env}'")
+logger.info(f"DEBUG: ALLOWED_ORIGINS env var: '{ALLOWED_ORIGINS_ENV}'")
 logger.info(f"DEBUG: Parsed Allowed Origins: {allowed_origins}")
 
 app.add_middleware(
@@ -332,6 +363,10 @@ class ResumeData(BaseModel):
 
 # --- Helper Functions ---
 
+def global_limit_key(request: Request):
+    """Key function for global rate limiting."""
+    return "global"
+
 def resume_to_yaml(data: ResumeData) -> dict:
     """Convert ResumeData to rendercv YAML structure."""
     cv: dict = {"name": data.name}
@@ -491,7 +526,8 @@ async def generate_pdf(request: Request, data: ResumeData):
 
 
 @app.post("/yaml")
-@limiter.limit("10/minute")
+@limiter.limit("500/hour", key_func=global_limit_key)
+@limiter.limit("15/minute")
 async def generate_yaml(request: Request, data: ResumeData):
     """Generate YAML from resume data."""
     yaml_dict = resume_to_yaml(data)

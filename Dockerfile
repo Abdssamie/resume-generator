@@ -29,6 +29,13 @@ RUN uv sync --frozen
 # Copy application code
 COPY api/ ./api/
 
+# Create a non-root user
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
 # Expose port
 EXPOSE 8000
 
