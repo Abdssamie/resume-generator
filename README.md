@@ -63,14 +63,6 @@ A free, open-source resume generator that transforms your profile into ATS-frien
    
 4. Open [http://localhost:3000](http://localhost:3000)
 
-## 🐳 Docker Support
-
-Run the entire stack with a single command:
-
-```bash
-docker-compose up -d
-```
-
 ## 🛠 Tech Stack
 
 - **Frontend:** Next.js 15, React 19, TailwindCSS, shadcn/ui, Lucide Icons, Framer Motion (Lottie).
