@@ -11,7 +11,8 @@ export function Hero() {
     };
 
     return (
-        <section className="container mx-auto px-4 py-12 md:py-20 mb-8">
+        <section className="w-full px-4 py-12 md:py-20 mb-8">
+            <div className="max-w-[1600px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Left Column - Lottie Animation */}
                 <div className="order-first flex justify-center lg:justify-end">
@@ -45,6 +46,7 @@ export function Hero() {
                         </Button>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
     );

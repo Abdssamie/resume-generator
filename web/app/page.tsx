@@ -234,9 +234,9 @@ export default function Home() {
         <main className="min-h-screen bg-gradient-to-b from-background to-muted/30">
             <Hero />
 
-            <div id="resume-builder" className="container mx-auto py-8 px-4 scroll-mt-8">
+            <div id="resume-builder" className="w-full py-8 px-4 scroll-mt-8">
                 {/* AI Prompt - Prominent at top */}
-                <div className="max-w-6xl mx-auto mb-6">
+                <div className="max-w-[1600px] mx-auto mb-6">
                     <Card className="bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-fuchsia-500/10 border-violet-500/20">
                         <CardContent className="py-4">
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -258,7 +258,7 @@ export default function Home() {
                 </div>
 
                 {/* Main Content - Two Column Layout */}
-                <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                     {/* Left Column - Form */}
                     <Card>
                         <CardHeader className="pb-4">
